@@ -1,0 +1,9 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: tar.gzをホストからリモートに転送・展開
+      unarchive:
+        # tar cvf test2.tar.gz ./*
+        src=./test2.tar.gz 
+        dest=/tmp/

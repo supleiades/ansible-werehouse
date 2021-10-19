@@ -1,0 +1,13 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: yumでgitをインストール
+      yum: name=git
+      become: yes
+    - name: yumでitemsで指定したパッケージをまとめてインストール
+      yum: name={{ item }}
+      with_items:
+        - whois
+        - htop
+      become: yes
