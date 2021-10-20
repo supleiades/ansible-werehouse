@@ -1,0 +1,20 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: ディレクトリの作成
+      file:
+        path=/tmp/tmp_dir/
+        state=directory
+        mode=0775
+        group=apache
+
+    - name: ファイルの作成
+      file:
+        path=/tmp/tmp_dir/
+        state=touch
+        owner=apache
+        group=apache
+      # デフォルトユーザー(ec2-user)では自信が所属するグループにしか変更d駅ないため
+      # sudo権限でownとgrpを指定して作成
+      become: true

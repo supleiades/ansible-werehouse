@@ -1,0 +1,14 @@
+- repo: https://github.com/ansible/ansible-lint.git
+  rev: v5.2.1
+  hooks:
+    - id: ansible-lint
+      name: ansible-lint
+      types: [file, yaml]
+
+- repo: https://github.com/adrienverge/yamllint.git
+  rev: v1.26.3
+  hooks:
+    - id: yamllint
+      name: yamllint
+      description: This hook runs yamllint.
+      types: [file, yaml]

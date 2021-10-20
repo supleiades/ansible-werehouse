@@ -4,7 +4,7 @@
   vars:
     url_path: http://kyoto-trampoline.com/data/dwtest.pdf
   tasks:
-    - name: URL先のファイルをダウンロード
-      get_url:  
+    - name: URL先のフさくせいダウンロ
+      get_url:
         url={{ url_path }}
         dest=/tmp/ansible-text.txt

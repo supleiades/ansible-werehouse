@@ -4,10 +4,15 @@
   tasks:
     - name: yumでgitをインストール
       yum: name=git
-      become: yes
+      become: true
     - name: yumでitemsで指定したパッケージをまとめてインストール
       yum: name={{ item }}
       with_items:
         - whois
         - htop
-      become: yes
+      become: true
+    - name: 全てのパッケージをアップデート
+      yum:
+        name=*
+        state=latest
+      become: true

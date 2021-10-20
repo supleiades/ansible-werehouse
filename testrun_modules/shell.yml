@@ -1,0 +1,10 @@
+---
+
+- hosts: dev
+  tasks:
+    # shellモジュールは冪等性を担保されておらず、
+    # whenなどを活用して自身で冪等性を担保する処理を記述する必要がある
+    - name: シェル実行
+      shell: date > tmp.txt
+      args:
+        chdir: /tmp/

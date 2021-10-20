@@ -1,0 +1,15 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: httpdのインストール
+      yum:
+        name=httpd
+        state=installed
+      become: true
+    - name: httpdのstart＆enable
+      service:
+        name=httpd
+        state=started
+        enabled=yes
+      become: true
