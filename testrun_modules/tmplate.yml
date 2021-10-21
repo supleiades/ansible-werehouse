@@ -1,0 +1,10 @@
+---
+
+- hosts: dev
+  vars:
+    ip: 8.8.8.8
+  tasks:
+    - name: 変数付きのファイルをcopy
+      template:
+        src=../tmpfiles/tmp.conf
+        dest=/tmp/tmp-template.conf

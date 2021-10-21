@@ -1,0 +1,36 @@
+# 文字の置換
+# async： 実行するtaskを待つ時間
+# poll： task終了をチェックする時間
+# ignore_erroes： jikkoukekkagafailedでも処理を進める
+# inventory_hostname: プレイで繰り返される「現在」のホストのイベントリー名
+# selinuxの反映確認
+## getenforce
+---
+
+- hosts: dev
+  vars:
+  tasks:
+    - name: selinuxを無効にする
+      lineinfile:
+        dest=/etc/selinux/config
+        regexp="^SELINUX=.*"
+        line="SELINUX=disabled"
+      become: true
+    - name: selinuxの設定変更のため再起動
+      shell:
+        sleep 2 && shudown -r now "Ansible updates triggered"
+      async:
+        1
+      poll:
+        0
+      ignore_errors:
+        true
+      become: true
+    - name: サーバーが起動するまで待機した後SSHする
+      wait_for:
+        host={{ inventory_hostname }}
+        port=22
+        state=started
+        delay=30
+        timeout=300
+      delegate_to: localhost

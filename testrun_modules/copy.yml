@@ -1,0 +1,8 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: ファイルのコピー
+      copy:
+        src=../tmpfiles/tmp.txt
+        dest=/tmp/tmp-copy.txt

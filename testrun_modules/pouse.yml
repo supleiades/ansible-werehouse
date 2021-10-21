@@ -1,0 +1,25 @@
+# 同じmode0744の同じファイル名のファイル名が存在しなければファイルを作成
+# プロンプトから入力待ちして、入力した文字のファイル名を作成する
+---
+
+- hosts: dev
+  tasks:
+    - name: 作成するファイル名の入力待ち
+      pause:
+        prompt: "作成するファイル名は何にしますか？"
+      register: file_name
+    - name: 入力された値を変数化
+      set_fact:
+        create_name: "{{file_name.user_input}}"
+    - name: 同しrwxの同じファイル名が存在するか確認
+      stat: path=/tmp/{{create_name}}
+      register: file_r
+    - name: ディレクトリの作成
+      file:
+        path=/tmp/{{create_name}}
+        state=touch
+        mode=0644
+      when:
+        not file_r.stat.exists
+        and file_r.stat.isreg
+        and file_r.stat.mode == "0644"

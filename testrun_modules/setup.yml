@@ -1,0 +1,20 @@
+# 何の設定が存在するか確認
+## ansible -i hosts dev -m setup
+## ansible -i hosts dev -m setup | grep distribution
+---
+
+- hosts: dev
+  vars:
+  tasks:
+    - name: Amazon
+      shell: date > /tmp/amazon.txt
+      when:
+        ansible_distribution == "Amazon"
+    - name: Centos
+      shell: date > /tmp/centos.txt
+      when:
+        ansible_distribution == "Centos"
+    - name: Ubuntu
+      shell: date > /tmp/ubuntu.txt
+      when:
+        ansible_distribution == "Ubuntu"

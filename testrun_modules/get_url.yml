@@ -7,4 +7,4 @@
     - name: URL先のフさくせいダウンロ
       get_url:
         url={{ url_path }}
-        dest=/tmp/ansible-text.txt
+        dest=/tmp/tmp-get_url.txt

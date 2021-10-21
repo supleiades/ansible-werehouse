@@ -1,0 +1,23 @@
+# コマンド実行時に[--extra-vars]のオプションと
+# 引数(start="ye")を付与しないとファイル作成のタスクはfailedになる
+# 実行コマンド
+# ansible-playbook -i ../hosts with_items-extravers.yml --extra-vars start="yes"
+---
+
+- hosts: dev
+  tasks:
+    - name: ディレクトリ作成
+      file:
+        path=/tmp/with-items
+        state=directory
+    - name: ファイル作成
+      file:
+        path=/tmp/with-items/
+        state=touch
+        mode=0775
+      with_items:
+        - tmp1.txt
+        - tmp2.txt
+        - tmp3.txt
+      when:
+        start == "yes"

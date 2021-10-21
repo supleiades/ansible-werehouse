@@ -1,0 +1,8 @@
+---
+
+- hosts: dev
+  vars:
+  tasks:
+    - name: scriptの実行
+      script:
+        ../tmpfiles/tmp.sh

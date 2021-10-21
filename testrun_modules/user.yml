@@ -1,0 +1,19 @@
+---
+# 作成後の確認
+## cat /etc/passwd
+## cat /etc/shadow
+# remove=true
+## state=absentの時、ユーザーに関連づいたディレクトリを削除するか
+
+- hosts: dev
+  become: true
+  vars:
+    username: tmp-user
+    password: tmp-user
+  tasks:
+    - name: ユーザーの作成
+      user:
+        name={{ username }}
+        password={{ password | password_hash('sha512') }}
+        state=present
+        remove=true
