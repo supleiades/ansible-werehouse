@@ -1,0 +1,36 @@
+# この手順をansibleで実現
+## https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/set-time.html
+## AmazonLinux2ではchronyのインストールと設定が適用済
+---
+
+- hosts: dev
+  become: true
+  tasks:
+    - name: chronydのパッケージで存在確認
+      yum:
+        list: chronyd
+      register: chronyd_info
+    - name: chronyd_infoの変数展開
+      debug:
+        msg: "{{ chronyd_info }}"
+    - name: yumでntp*をアンインストール
+      action: >
+        {{ ansible_pkg_mgr }}
+        name=ntp*
+        state=absent
+    - name: yumでchronydをインストール
+      action: >
+        {{ ansible_pkg_mgr }}
+        name=chronyd
+        state=installed
+      when:  # chronydが存在しなければskip
+        chronyd_info.results
+        and not ansible_distribution == "Amazon"
+        and ansible_distribution_version == "2"
+    - name: chronyを起動
+      service:
+        name=chronyd
+        state=started
+        enabled=true
+      when:  # chronydが存在しなければskip
+        chronyd_info.results
