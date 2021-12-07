@@ -1,0 +1,3 @@
+---
+  - include: zshrc.yml
+  - include: setup-git-tools.yml

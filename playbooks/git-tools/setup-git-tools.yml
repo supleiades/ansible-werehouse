@@ -1,0 +1,31 @@
+---
+
+- hosts: localhost
+  vars:
+    dest_dir: ./git-tools/
+    git_tools:
+      - name: git-prompt.sh
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+      - name: git-completion.bash
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+      - name: git-completion.zsh
+        url: https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+  tasks:
+
+    - name: Create a directry to store git tools.
+      file:
+        path: "{{ dest_dir }}"
+        state: directory
+        mode: "0755"
+        recurse: true
+
+    - name: download get
+      get_url:
+        url: "{{ item.url }}"
+        dest: "{{ dest_dir }}{{ item.name }}"
+        mode: '0755'
+        validate_certs: false
+      register: geturl_result
+      loop: "{{ git_tools }}"
+
+

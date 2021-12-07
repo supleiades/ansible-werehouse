@@ -1,0 +1,39 @@
+---
+
+- hosts: localhost
+  vars: 
+    import_file: ./git-tools-zshrc.txt
+    target_file: ./mod_file.txt 
+    checl_marker: 
+    add_marker: "### add zshrc setup by ansible"
+    now_date: "{{ ansible_date_time.date }}"
+  handlers:
+    - name: Added process to load git-tool in zshrc.
+      blockinfile: 
+        path: "{{ target_file }}"
+        block: "{{ item }}"  
+        insertafter: EOF   
+        marker_end: "### Last line if zeshrc added by ansible: {{ now_date }}"
+      with_file:
+        - "{{ import_file }}"
+      listen: add_filecontent
+
+    - name: Adds a date after the last added line.
+      lineinfile:
+        path: "{{ target_file }}"
+        line: "### add zshrc by ansible: {{ now_date }}"
+      listen: add_filecontent
+
+  tasks:
+
+    - name: Check for the existence of the zshrc file.
+      stat:
+        path: "{{ target_file }}"
+      register: result
+      failed_when: not result.stat.exists
+
+    - name: Check if work has been done.
+      lineinfile: 
+        path: "{{ target_file }}"
+        line: "{{ add_marker }}"
+      notify: add_filecontent
