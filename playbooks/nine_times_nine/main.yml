@@ -1,0 +1,11 @@
+---
+
+- hosts: localhost
+  vars:
+    left_table: "{{ range(1, 9+1)|list }}"
+    right_table:    "{{ range(1, 9+1)|list }}"
+  tasks:
+
+    - debug:
+        msg: "{{ item.0 * item.1}}"
+      loop: "{{ left_table|product(right_table)|list }}" 
