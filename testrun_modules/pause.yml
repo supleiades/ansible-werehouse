@@ -1,0 +1,17 @@
+---
+
+- hosts: dev
+  tasks:
+    - name: confirm
+      pause: prompt="(y/n)"
+      register: yn
+      
+    - name: abort
+      fail: msg="Aborted!!"
+      when: yn.user_input != 'n'
+      run_once: true  # ホストが複数の場合都度確認される所を一度だけにする
+      
+    - name: "inputがyの時"
+      debug:
+        msg: "ユーザーがyと反応しました"
+      when: yn.user_input == "y"
